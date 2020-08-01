@@ -20,7 +20,8 @@ namespace Pjx_Api
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.RequireHttpsMetadata = false; // TODO: non-SSL for testing purpose and local development
+                    options.Authority = "http://localhost:5001";
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
