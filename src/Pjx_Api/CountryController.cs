@@ -12,7 +12,7 @@ namespace Pjx_Api
         [HttpGet]
         public IActionResult GetAll()
         {
-            return new JsonResult(new string[] { "USA", "CA" });
+            return new JsonResult(new string[] { "USA", "CA", "MEX", "UK" });
         }
     }
 }
