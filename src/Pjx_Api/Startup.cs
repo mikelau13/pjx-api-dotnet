@@ -35,7 +35,7 @@ namespace Pjx_Api
                 options.AddPolicy("ApiScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "api1");
+                    policy.RequireClaim("scope", "api1", "web_sso"); // web_sso from the pjx-web-react
                 });
             });
 
@@ -44,7 +44,7 @@ namespace Pjx_Api
                 // this defines a CORS policy called "default"
                 options.AddPolicy("default", policy =>
                 {
-                    // allow Ajax calls to be made from https://localhost:5003 (pjx-web-react)
+                    // allow Ajax calls to be made from https://localhost:3000 (pjx-web-react)
                     policy.WithOrigins("http://localhost:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
