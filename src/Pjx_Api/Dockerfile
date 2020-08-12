@@ -19,4 +19,7 @@ RUN dotnet publish "pjx-api-dotnet.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ADD ./pjx-sso-identityserver.rsa_2048.cert.crt /usr/local/share/ca-certificates/asp_dev/
+RUN chmod -R 644 /usr/local/share/ca-certificates/asp_dev/
+RUN update-ca-certificates --fresh
 ENTRYPOINT ["dotnet", "Pjx_Api.dll"]
