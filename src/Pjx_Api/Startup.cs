@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -17,12 +18,16 @@ namespace Pjx_Api
         {
             services.AddControllers();
 
+            IConfigurationRoot configurationRoot = new ConfigurationBuilder().AddEnvironmentVariables("PJX_").Build();
+            IConfigurationSection section = configurationRoot.GetSection("SSO"); 
+            string authAuthority = section["AUTHORITY"] ?? "http://localhost:5001"; // "http://pjx-sso-identityserver:80";
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
                     options.RequireHttpsMetadata = false; // TODO: non-SSL for testing purpose and local development
-                    options.Authority = "http://localhost:5001";
-
+                    options.Authority = authAuthority;
+                    options.MetadataAddress = authAuthority + "/.well-known/openid-configuration";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false

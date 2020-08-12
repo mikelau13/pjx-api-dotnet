@@ -1,11 +1,15 @@
+# ./docker-compose.yml
+
 version: '3.8'
 
 services:
   pjx-api-dotnet:
     build:
-      context: ./src/Pjx_Api/
+      context: .
       dockerfile: Dockerfile
-    container_name: pjx-api-dotnet-dev
+    container_name: pjx-api-dotnet
+    volumes:
+      - .:/usr/api-dotnet
     ports:
       - 6001:80
     networks:
@@ -17,3 +21,4 @@ networks:
   pjx-network:
     name: pjx-network
     driver: bridge
+
