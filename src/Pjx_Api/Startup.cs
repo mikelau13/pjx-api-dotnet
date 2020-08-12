@@ -20,8 +20,8 @@ namespace Pjx_Api
 
             IConfigurationRoot configurationRoot = new ConfigurationBuilder().AddEnvironmentVariables("PJX_").Build();
             IConfigurationSection section = configurationRoot.GetSection("SSO"); 
-            string authAuthority = section["AUTHORITY"] ?? "http://localhost:5001"; // "http://pjx-sso-identityserver:80";
-
+            string authAuthority = section["AUTHORITY"] ?? "http://localhost:5001"; // "https://pjx-sso-identityserver";
+            Console.WriteLine("authAuthority = " + authAuthority);
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {

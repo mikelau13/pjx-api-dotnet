@@ -15,7 +15,7 @@ services:
     networks:
       - pjx-network
     environment:
-      - PJX_SSO__AUTHORITY=http://pjx-sso-identityserver:80
+      - PJX_SSO__AUTHORITY=https://pjx-sso-identityserver
 
 networks:
   pjx-network:
