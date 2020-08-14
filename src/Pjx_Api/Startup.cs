@@ -17,7 +17,21 @@ namespace Pjx_Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "pjx-api-dotnet";
+                    document.Info.Description = "A simple ASP.NET Core web API by mikelau13";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Mike Lau",
+                        Email = string.Empty,
+                        Url = "https://github.com/mikelau13"
+                    };
+                };
+            });
             IConfigurationRoot configurationRoot = new ConfigurationBuilder().AddEnvironmentVariables("PJX_").Build();
             IConfigurationSection section = configurationRoot.GetSection("SSO"); 
             string authAuthority = section["AUTHORITY"] ?? "http://localhost:5001"; // "https://pjx-sso-identityserver";
@@ -59,6 +73,9 @@ namespace Pjx_Api
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseRouting();
             app.UseCors("default"); // CORS middleware to the pipeline
 
