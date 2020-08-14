@@ -34,6 +34,11 @@ Or run it with dotnet for local debugging:
 dotnet build && dotnet run
 ```
 
+Then you can visit the swagger UI: http://localhost:6001/swagger/
+
+Or the swagger specification: http://localhost:6001/swagger/v1/swagger.json
+
+
 ## To generate self-signed certificate for Identity Server
 
 Execute the follow PowerShell script (but replace openssl path and output paths):
