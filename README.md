@@ -20,7 +20,7 @@ A simple API project developed with .Net Core 3.1, being consumed by [pjx-web-re
 > Please follow the instructions in [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver) to set up the `hosts` and trust the self-signed SSL certificate, otherwise this API might refuse to authenticate.
 
 
-### To Use
+### To run
 
 Run this command:
 
@@ -34,9 +34,13 @@ Or run it with dotnet for local debugging:
 dotnet build && dotnet run
 ```
 
+### To use with Swagger
+
 Then you can visit the swagger UI: http://localhost:6001/swagger/
 
 Or the swagger specification: http://localhost:6001/swagger/v1/swagger.json
+
+In order to try the protected APIs, you  might need to first obtain a token from [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver), please follow the steps to register in [pjx-web-react](https://github.com/mikelau13/pjx-web-react).
 
 
 ## To generate self-signed certificate for Identity Server
