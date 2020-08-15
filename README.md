@@ -36,11 +36,19 @@ dotnet build && dotnet run
 
 ### To use with Swagger
 
-Then you can visit the swagger UI: http://localhost:6001/swagger/
+Then you can visit the swagger UI: http://localhost:6001/swagger/ or the swagger specification: http://localhost:6001/swagger/v1/swagger.json
 
-Or the swagger specification: http://localhost:6001/swagger/v1/swagger.json
+You will need the token to execute most of the APIs in this project, you can obtain a token from [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver), please follow the steps to register in [pjx-root](https://github.com/mikelau13/pjx-root#using-the-web-app), login to the web page, then visit the `/country/all` page and get the key from the browser's developer tool.
 
-In order to try the protected APIs, you  might need to first obtain a token from [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver), please follow the steps to register in [pjx-web-react](https://github.com/mikelau13/pjx-web-react).
+![pjx get token](/images/api_swagger_key.png)
+
+Then in the swagger page, click the `authorize` button, paste the token `Bearer xxxxxx`:
+
+![pjx paste token](/images/api_swagger_authorize.png)
+
+Then it should return successful response 200:
+
+![pjx response 200](/images/api_swagger_response_200.png)
 
 
 ## To generate self-signed certificate for Identity Server
