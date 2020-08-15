@@ -29,6 +29,7 @@ namespace Pjx_Api
                     Description = "Please copy the 'Bearer ' + valid JWT token into field",
                     In = OpenApiSecurityApiKeyLocation.Header
                 }));
+                config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT Token"));
                 config.PostProcess = document =>
                 {
                     document.Info.Version = "v1";
