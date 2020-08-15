@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 namespace Pjx_Api
 {
@@ -19,6 +21,14 @@ namespace Pjx_Api
             services.AddControllers();
             services.AddSwaggerDocument(config =>
             {
+                config.DocumentProcessors.Add(new SecurityDefinitionAppender("JWT Token",
+                new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    Description = "Please copy the 'Bearer ' + valid JWT token into field",
+                    In = OpenApiSecurityApiKeyLocation.Header
+                }));
                 config.PostProcess = document =>
                 {
                     document.Info.Version = "v1";
