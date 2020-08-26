@@ -16,10 +16,12 @@ RUN dotnet build "pjx-api-dotnet.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "pjx-api-dotnet.csproj" -c Release -o /app/publish
+COPY /src/Pjx_Api/PjxCalendar.db /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ADD ./src/Pjx_Api/pjx-sso-identityserver.rsa_2048.cert.crt /usr/local/share/ca-certificates/asp_dev/
 RUN chmod -R 644 /usr/local/share/ca-certificates/asp_dev/
 RUN update-ca-certificates --fresh
