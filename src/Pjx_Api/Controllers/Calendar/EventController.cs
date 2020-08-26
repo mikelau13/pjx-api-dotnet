@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ namespace Pjx_Api.Controllers.Calendar
             _context = context;
         }
 
-        [Route("api/calendar/healthcheck")]
+        [Route("healthcheck")]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult HealthCheck()
@@ -39,14 +40,15 @@ namespace Pjx_Api.Controllers.Calendar
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [Route("api/calendar/event/create")]
+        [Route("event/create")]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(EventCreateBindingModel model)
         {
             _logger.LogInformation("Create(EventCreateBindingModel model)");
 
-            string userId = User.GetSubjectId();
+            ClaimsPrincipal currentUser = this.User;
+            string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             CalendarEvent ce = new CalendarEvent
             {
