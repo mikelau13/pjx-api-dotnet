@@ -65,5 +65,33 @@ namespace Pjx_Api.Controllers.Calendar
 
             return new JsonResult(ce);
         }
+
+
+        /// <summary>
+        /// Return all events belonging to a particular user.
+        /// </summary>
+        /// <param name="start">Calendar start date, inclusive</param>
+        /// <param name="end">Calendar end date, exclusive</param>
+        /// <returns></returns>
+        [Route("event/readall")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ReadAll(DateTimeOffset start, DateTimeOffset end)
+        {
+            _logger.LogInformation("ReadAll('{0}', '{1}')", start, end);
+
+            ClaimsPrincipal currentUser = this.User;
+            string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            _logger.LogInformation(userId);
+
+            List<CalendarEvent> results = _context.CalendarEvents.Where(x => 
+                x.UserId == userId
+                && ((DateTimeOffset.Compare(x.Start, start) >= 0 && DateTimeOffset.Compare(x.Start, end) < 0)
+                || (x.End.HasValue && (DateTimeOffset.Compare(x.End.Value, start) >= 0 && DateTimeOffset.Compare(x.End.Value, end) < 0)))
+            ).ToList();
+
+            return new JsonResult(results);
+        }
     }
 }
