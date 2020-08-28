@@ -3,7 +3,7 @@ version: '3.8'
 services:
   pjx-api-dotnet:
     build:
-      context: ./src/Pjx_Api/
+      context: .
       dockerfile: Dockerfile
     container_name: pjx-api-dotnet-dev
     ports:

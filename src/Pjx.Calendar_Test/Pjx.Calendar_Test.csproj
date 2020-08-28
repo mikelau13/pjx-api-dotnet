@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pjx.CalendarLibrary\Pjx.CalendarLibrary.csproj" />
-    <ProjectReference Include="..\Pjx_Api\pjx-api-dotnet.csproj" />
   </ItemGroup>
 
 </Project>
