@@ -9,7 +9,7 @@
     <RootNamespace>Pjx_Api</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Release|AnyCPU'">
     <NoWarn>1701;1702;1591;1998</NoWarn>
   </PropertyGroup>
 

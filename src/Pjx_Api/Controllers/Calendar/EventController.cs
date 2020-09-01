@@ -68,6 +68,39 @@ namespace Pjx_Api.Controllers.Calendar
 
 
         /// <summary>
+        /// Update an existing user event.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("event/update")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Update(EventUpdateBindingModel model)
+        {
+            _logger.LogInformation("Create(EventUpdateBindingModel model)");
+
+            ClaimsPrincipal currentUser = this.User;
+            string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            CalendarEvent ce = new CalendarEvent
+            {
+                EventId = model.Id,
+                UserId = userId,
+                Title = model.Title,
+                Start = model.Start,
+                End = model.End
+            };
+
+            //TODO: business logic here to validate event
+
+            _context.Update(ce);
+            _context.SaveChanges();
+
+            return new JsonResult(ce);
+        }
+
+
+        /// <summary>
         /// Return all events belonging to a particular user.
         /// </summary>
         /// <param name="start">Calendar start date, inclusive</param>
