@@ -13,6 +13,8 @@ namespace Pjx.CalendarLibrary.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EventId { get; set; }
+
+        [ConcurrencyCheck]
         public string UserId { get; set; }
 
         [StringLength(50)]
