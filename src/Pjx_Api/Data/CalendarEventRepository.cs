@@ -9,7 +9,6 @@ namespace Pjx_Api.Data
 {
     public class CalendarEventRepository : GenericRepository<CalendarEvent>, ICalendarEventRepository
     {
-        protected readonly CalendarDbContext _context;
         public CalendarEventRepository(CalendarDbContext context) : base(context) { }
 
         public IEnumerable<CalendarEvent> GetAllBetweenByUser(string userId, DateTimeOffset start, DateTimeOffset end)

@@ -66,9 +66,16 @@ namespace Pjx_Api.Controllers.Calendar
             //TODO: business logic here to validate event
 
             _unitOfWork.CalendarEvents.Add(ce);
-            _unitOfWork.Complete();
+            int updated =_unitOfWork.Complete();
 
-            return new JsonResult(ce);
+            if (updated > 0) 
+            {
+                return new JsonResult(ce);
+            } 
+            else
+            {
+                return base.Problem ("Failed to commit.");
+            } 
         }
 
 
@@ -99,9 +106,16 @@ namespace Pjx_Api.Controllers.Calendar
             //TODO: business logic here to validate event
 
             _unitOfWork.CalendarEvents.Update(ce);
-            _unitOfWork.Complete();
+            int updated =_unitOfWork.Complete();
 
-            return new JsonResult(ce);
+            if (updated > 0) 
+            {
+                return new JsonResult(ce);
+            } 
+            else
+            {
+                return base.Problem ("Failed to commit.");
+            } 
         }
 
 
@@ -125,10 +139,19 @@ namespace Pjx_Api.Controllers.Calendar
             if (toDel != null && toDel.UserId == userId)
             {
                 _unitOfWork.CalendarEvents.Remove(toDel);
-                _unitOfWork.Complete();
+                int updated =_unitOfWork.Complete();
 
-                return new JsonResult(true);
-            } else {
+                if (updated > 0) 
+                {
+                    return new JsonResult(true);
+                } 
+                else
+                {
+                    return base.Problem ("Failed to commit.");
+                } 
+            } 
+            else 
+            {
                 return new JsonResult(false);
             }
         }
