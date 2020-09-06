@@ -15,6 +15,7 @@ namespace Pjx_Api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CalendarEvent>()
+                .ToTable("CalendarEvents")
                 .HasIndex(b => b.UserId)
                 .HasName("Index_UserId");
         }

@@ -7,12 +7,16 @@ using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pjx.CalendarLibrary.Models;
 using Pjx_Api.Data;
 
 namespace Pjx_Api.Controllers.Calendar
 {
+    /// <summary>
+    /// Controller to handle CRUD of user calendar event(s).
+    /// </summary>
     [Route("api/calendar")]
     [ApiController]
     public class EventController : ControllerBase
@@ -32,7 +36,7 @@ namespace Pjx_Api.Controllers.Calendar
         [AllowAnonymous]
         public IActionResult HealthCheck()
         {
-            _logger.LogInformation("HealthCheck()");
+            _logger.LogInformation("EventController.HealthCheck()");
             return new JsonResult("okay");
         }
 
@@ -46,7 +50,7 @@ namespace Pjx_Api.Controllers.Calendar
         [Authorize]
         public async Task<IActionResult> Create(EventCreateBindingModel model)
         {
-            _logger.LogInformation("Create(EventCreateBindingModel model)");
+            _logger.LogInformation("EventController.Create(EventCreateBindingModel model)");
 
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -74,11 +78,11 @@ namespace Pjx_Api.Controllers.Calendar
         /// <param name="model"></param>
         /// <returns></returns>
         [Route("event/update")]
-        [HttpPost]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> Update(EventUpdateBindingModel model)
         {
-            _logger.LogInformation("Create(EventUpdateBindingModel model)");
+            _logger.LogInformation("EventController.Update(EventUpdateBindingModel model)");
 
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -102,17 +106,46 @@ namespace Pjx_Api.Controllers.Calendar
 
 
         /// <summary>
+        /// Delete an existing user event.
+        /// </summary>
+        /// <param name="eventId">CalendarEvent.EventId</param>
+        /// <returns></returns>
+        [Route("event/delete")]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> Delete(int eventId)
+        {
+            _logger.LogInformation("EventController.Delete({0})", eventId);
+
+            ClaimsPrincipal currentUser = this.User;
+            string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            CalendarEvent toDel = _unitOfWork.CalendarEvents.GetById(eventId);
+
+            if (toDel != null && toDel.UserId == userId)
+            {
+                _unitOfWork.CalendarEvents.Remove(toDel);
+                _unitOfWork.Complete();
+
+                return new JsonResult(true);
+            } else {
+                return new JsonResult(false);
+            }
+        }
+
+
+        /// <summary>
         /// Return all events belonging to a particular user.
         /// </summary>
         /// <param name="start">Calendar start date, inclusive</param>
         /// <param name="end">Calendar end date, exclusive</param>
         /// <returns></returns>
-        [Route("event/readall")]
+        [Route("event/readAll")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> ReadAll(DateTimeOffset start, DateTimeOffset end)
         {
-            _logger.LogInformation("ReadAll('{0}', '{1}')", start, end);
+            _logger.LogInformation("EventController.ReadAll('{0}', '{1}')", start, end);
 
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
