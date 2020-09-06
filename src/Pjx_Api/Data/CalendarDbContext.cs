@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Pjx.CalendarLibrary.Model;
+using Pjx.CalendarLibrary.Models;
 
 namespace Pjx_Api.Data
 {

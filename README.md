@@ -20,6 +20,14 @@ A simple API project developed with .Net Core 3.1, being consumed by [pjx-web-re
 > Please follow the instructions in [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver) to set up the `hosts` and trust the self-signed SSL certificate, otherwise this API might refuse to authenticate.
 
 
+### Patterns
+
+Repository Pattern, Unit of Work Pattern, Dependency Injection
+
+> For complex scenarios, Microsoft recommanded using an abstraction layer of Repository Pattern over the EF Core, although the DbContext iteslf already based on Repository pattern - 
+https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core#using-a-custom-repository-versus-using-ef-dbcontext-directly
+
+
 ### To run
 
 Run this command:
