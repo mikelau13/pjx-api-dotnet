@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Pjx.CalendarLibrary.Model
+namespace Pjx.CalendarLibrary.Models
 {
     [Serializable]
     public class CalendarEvent

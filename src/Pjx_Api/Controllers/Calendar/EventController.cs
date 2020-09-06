@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Pjx.CalendarLibrary.Model;
+using Pjx.CalendarLibrary.Models;
 using Pjx_Api.Data;
 
 namespace Pjx_Api.Controllers.Calendar
@@ -21,13 +21,14 @@ namespace Pjx_Api.Controllers.Calendar
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly CalendarDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<EventController> _logger;
 
-        public EventController(CalendarDbContext context, ILogger<EventController> logger)
+        public EventController(ILogger<EventController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            _context = context;
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [Route("healthcheck")]
@@ -64,8 +65,8 @@ namespace Pjx_Api.Controllers.Calendar
 
             //TODO: business logic here to validate event
 
-            _context.Add(ce);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CalendarEvents.Add(ce);
+            _unitOfWork.Complete();
 
             return new JsonResult(ce);
         }
@@ -97,8 +98,8 @@ namespace Pjx_Api.Controllers.Calendar
 
             //TODO: business logic here to validate event
 
-            _context.Update(ce);
-            await _context.SaveChangesAsync();
+            _unitOfWork.CalendarEvents.Update(ce);
+            _unitOfWork.Complete();
 
             return new JsonResult(ce);
         }
@@ -119,18 +120,15 @@ namespace Pjx_Api.Controllers.Calendar
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            CalendarEvent toDel = await _context.CalendarEvents.Where(x => 
-                x.EventId == eventId
-                && x.UserId == userId
-            ).FirstOrDefaultAsync();
+            CalendarEvent toDel = _unitOfWork.CalendarEvents.GetById(eventId);
 
-            _context.Remove(toDel);
+            if (toDel != null && toDel.UserId == userId)
+            {
+                _unitOfWork.CalendarEvents.Remove(toDel);
+                _unitOfWork.Complete();
 
-            try {
-                await _context.SaveChangesAsync();
-                
                 return new JsonResult(true);
-            } catch {
+            } else {
                 return new JsonResult(false);
             }
         }
@@ -154,11 +152,7 @@ namespace Pjx_Api.Controllers.Calendar
 
             _logger.LogInformation(userId);
 
-            List<CalendarEvent> results = await _context.CalendarEvents.Where(x => 
-                x.UserId == userId
-                && ((DateTimeOffset.Compare(x.Start, start) >= 0 && DateTimeOffset.Compare(x.Start, end) < 0)
-                || (x.End.HasValue && (DateTimeOffset.Compare(x.End.Value, start) >= 0 && DateTimeOffset.Compare(x.End.Value, end) < 0)))
-            ).ToListAsync();
+            IEnumerable<CalendarEvent> results = _unitOfWork.CalendarEvents.GetAllBetweenByUser(userId, start, end);
 
             return new JsonResult(results);
         }

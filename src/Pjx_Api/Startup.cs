@@ -53,7 +53,12 @@ namespace Pjx_Api
                 };
             });
 
+            #region dbContext & Repositories
             services.AddDbContext<CalendarDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<ICalendarEventRepository, CalendarEventRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            #endregion dbContext & Repositories
 
             IConfigurationRoot configurationRoot = new ConfigurationBuilder().AddEnvironmentVariables("PJX_").Build();
             IConfigurationSection section = configurationRoot.GetSection("SSO"); 
