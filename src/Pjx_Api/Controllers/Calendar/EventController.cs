@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Pjx.CalendarLibrary.Models;
+using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
 namespace Pjx_Api.Controllers.Calendar
@@ -27,7 +28,6 @@ namespace Pjx_Api.Controllers.Calendar
         public EventController(ILogger<EventController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            //_context = context;
             _unitOfWork = unitOfWork;
         }
 

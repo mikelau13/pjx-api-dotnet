@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
 namespace Pjx_Api

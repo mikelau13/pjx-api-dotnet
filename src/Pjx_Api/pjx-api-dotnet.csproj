@@ -14,6 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\ICalendarEventRepository.cs" />
+    <Compile Remove="Data\IGenericRepository.cs" />
+    <Compile Remove="Data\IUnitOfWork.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
@@ -31,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pjx.CalendarEntity\Pjx.CalendarEntity.csproj" />
     <ProjectReference Include="..\Pjx.CalendarLibrary\Pjx.CalendarLibrary.csproj" />
   </ItemGroup>
 
