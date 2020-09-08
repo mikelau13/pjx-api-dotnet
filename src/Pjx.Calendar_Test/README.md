@@ -15,10 +15,10 @@ For time being, I developed only one rule and very few test cases; coming soon, 
 
 - For the Dependency Injection, [Autofac](https://autofac.org/) IoC container is being used to mock the repository in TDD, see example codes in [OverlappingCheckTests.cs](/src/Pjx.Calendar_Test/ConflictChecks/OverlappingCheckTests.cs).
 
-<img src="/src/Pjx.Calendar_Test/images/api_di_unittest.png" alt="Autofac" style="max-width:70%;" />
+<img src="/src/Pjx.Calendar_Test/images/api_di_unittest.png" alt="Autofac" width="700" />
 
 - Chain of Responsibility design pattern is applied to manage the rules, see example class [EventCheckAbstract.cs](/src/Pjx.CalendarLibrary/ConflictChecks/EventCheckAbstract.cs)
 
-<img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern" style="max-width:70%;" />
+<img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern"  width="700" />
 
 - To read the codes and projects, they are located in [https://github.com/mikelau13/pjx-api-dotnet/tree/master/src](/src/).
