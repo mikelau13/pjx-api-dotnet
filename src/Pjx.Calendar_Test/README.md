@@ -13,12 +13,12 @@ For time being, I developed only one rule and very few test cases; coming soon, 
 
 Entity Framework Core with Repository Pattern and Unit of Work Pattern, example [here](https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/Pjx_Api/Data/UnitOfWork.cs), so that I can easily inject any repositories and entities when needed.
 
-For the Dependency Injection, [Autofac](https://autofac.org/) IoC container is being used to mock the repository in TDD, see example codes in [OverlappingCheckTests.cs](https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/Pjx.Calendar_Test/ConflictChecks/OverlappingCheckTests.cs).
+For the Dependency Injection, [Autofac](https://autofac.org/) IoC container is being used to mock the repository in TDD, see example codes in [OverlappingCheckTests.cs](/src/Pjx.Calendar_Test/ConflictChecks/OverlappingCheckTests.cs).
 
-<br/><img src="/images/api_di_unittest.png" alt="Autofac" />
+<br/><img src="/src/Pjx.Calendar_Test/images/api_di_unittest.png" alt="Autofac" />
 
 Chain of Responsibility design pattern is applied to manage the rules, see example class [EventCheckAbstract.cs](https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/Pjx.CalendarLibrary/ConflictChecks/EventCheckAbstract.cs)
 
-<br/><img src="/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern" />
+<br/><img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern" />
 
 To read the codes and projects, they are located in this folder - https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/ 
