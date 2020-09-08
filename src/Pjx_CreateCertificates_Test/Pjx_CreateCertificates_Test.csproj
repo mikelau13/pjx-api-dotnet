@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pjx.CalendarLibrary\Pjx.CalendarLibrary.csproj" />
     <ProjectReference Include="..\Pjx_CreateCertificates\Pjx_CreateCertificates.csproj" />
   </ItemGroup>
 

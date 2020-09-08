@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Pjx.CalendarLibrary.Models;
+using Pjx.CalendarEntity.Models;
+using Pjx.CalendarLibrary.ConflictChecks;
 using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
@@ -63,19 +64,27 @@ namespace Pjx_Api.Controllers.Calendar
                 End = model.End
             };
 
-            //TODO: business logic here to validate event
+            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
 
-            _unitOfWork.CalendarEvents.Add(ce);
-            int updated =_unitOfWork.Complete();
-
-            if (updated > 0) 
+            if (cc.DoCheck(ce))
             {
-                return new JsonResult(ce);
-            } 
+                _unitOfWork.CalendarEvents.Add(ce);
+
+                int updated = _unitOfWork.Complete();
+
+                if (updated > 0)
+                {
+                    return new JsonResult(ce);
+                }
+                else
+                {
+                    return base.Problem("Failed to commit.");
+                }
+            }
             else
             {
-                return base.Problem ("Failed to commit.");
-            } 
+                return base.Problem("Failed conflict check.");
+            }
         }
 
 
@@ -103,19 +112,26 @@ namespace Pjx_Api.Controllers.Calendar
                 End = model.End
             };
 
-            //TODO: business logic here to validate event
+            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
 
-            _unitOfWork.CalendarEvents.Update(ce);
-            int updated =_unitOfWork.Complete();
-
-            if (updated > 0) 
+            if (cc.DoCheck(ce))
             {
-                return new JsonResult(ce);
-            } 
+                _unitOfWork.CalendarEvents.Update(ce);
+                int updated = _unitOfWork.Complete();
+
+                if (updated > 0)
+                {
+                    return new JsonResult(ce);
+                }
+                else
+                {
+                    return base.Problem("Failed to commit.");
+                }
+            }
             else
             {
-                return base.Problem ("Failed to commit.");
-            } 
+                return base.Problem("Failed conflict check.");
+            }
         }
 
 
@@ -144,7 +160,7 @@ namespace Pjx_Api.Controllers.Calendar
                 if (updated > 0) 
                 {
                     return new JsonResult(true);
-                } 
+                }
                 else
                 {
                     return base.Problem ("Failed to commit.");

@@ -30,7 +30,7 @@ namespace Pjx_Api.Data
             return _context.Set<T>().Where(expression);
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             return _context.Set<T>().ToList();
         }
