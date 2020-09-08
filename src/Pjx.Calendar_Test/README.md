@@ -11,14 +11,14 @@ For time being, I developed only one rule and very few test cases; coming soon, 
 
 ## About the codes and patterns
 
-Entity Framework Core with Repository Pattern and Unit of Work Pattern, example [here](https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/Pjx_Api/Data/UnitOfWork.cs), so that I can easily inject any repositories and entities when needed.
+- Entity Framework Core with Repository Pattern and Unit of Work Pattern, example [here](/src/Pjx_Api/Data/UnitOfWork.cs), so that I can easily inject any repositories and entities when needed.
 
-For the Dependency Injection, [Autofac](https://autofac.org/) IoC container is being used to mock the repository in TDD, see example codes in [OverlappingCheckTests.cs](/src/Pjx.Calendar_Test/ConflictChecks/OverlappingCheckTests.cs).
+- For the Dependency Injection, [Autofac](https://autofac.org/) IoC container is being used to mock the repository in TDD, see example codes in [OverlappingCheckTests.cs](/src/Pjx.Calendar_Test/ConflictChecks/OverlappingCheckTests.cs).
 
-<br/><img src="/src/Pjx.Calendar_Test/images/api_di_unittest.png" alt="Autofac" />
+<img src="/src/Pjx.Calendar_Test/images/api_di_unittest.png" alt="Autofac" style="max-width:70%;" />
 
-Chain of Responsibility design pattern is applied to manage the rules, see example class [EventCheckAbstract.cs](https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/Pjx.CalendarLibrary/ConflictChecks/EventCheckAbstract.cs)
+- Chain of Responsibility design pattern is applied to manage the rules, see example class [EventCheckAbstract.cs](/src/Pjx.CalendarLibrary/ConflictChecks/EventCheckAbstract.cs)
 
-<br/><img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern" />
+<img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern" style="max-width:70%;" />
 
-To read the codes and projects, they are located in this folder - https://github.com/mikelau13/pjx-api-dotnet/tree/master/src/ 
+- To read the codes and projects, they are located in [https://github.com/mikelau13/pjx-api-dotnet/tree/master/src](/src/).
