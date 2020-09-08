@@ -21,4 +21,4 @@ For time being, I developed only one rule and very few test cases; coming soon, 
 
 <img src="/src/Pjx.Calendar_Test/images/api_chain_conflictcheck.png" alt="Chain of Responsibility design pattern"  width="700" />
 
-- To read the codes and projects, they are located in [https://github.com/mikelau13/pjx-api-dotnet/tree/fullcalendar](/src/).
+- To read the codes and projects, they are located in [https://github.com/mikelau13/pjx-api-dotnet/tree/fullcalendar/src](/src/).
