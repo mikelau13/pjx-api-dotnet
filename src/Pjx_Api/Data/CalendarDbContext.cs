@@ -24,6 +24,17 @@ namespace Pjx_Api.Data
             modelBuilder.Entity<Department>()
                 .HasIndex(b => b.DepartmentId)
                 .HasName("Index_DepartmentId");
+
+            modelBuilder.Entity<Organization>()
+                .HasData(
+                    new Organization { OrganizationId = 1, Name = "Default Organization" }
+                );
+
+            modelBuilder.Entity<Department>()
+                .HasData(
+                    new Department { DepartmentId = 1, Name = "Default Department A", OrganizationId = 1 },
+                    new Department { DepartmentId = 2, Name = "Default Department B", OrganizationId = 1 }
+                );
         }
     }
 }

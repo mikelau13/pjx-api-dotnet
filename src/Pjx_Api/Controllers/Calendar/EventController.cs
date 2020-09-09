@@ -61,7 +61,8 @@ namespace Pjx_Api.Controllers.Calendar
                 UserId = userId,
                 Title = model.Title,
                 Start = model.Start,
-                End = model.End
+                End = model.End,
+                DepartmentId = 1
             };
 
             ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
