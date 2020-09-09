@@ -26,8 +26,8 @@ namespace Pjx.CalendarLibrary.ConflictChecks
 
                 bool overlapped = events.Exists(x => x.EventId != ce.EventId 
                     && (((DateTimeOffset.Compare(x.Start, ce.Start) >= 0 && DateTimeOffset.Compare(x.Start, end) < 0)
-                        || ((x.End.HasValue && (DateTimeOffset.Compare(x.End.Value, ce.Start) >= 0 && DateTimeOffset.Compare(x.End.Value, end) < 0))
-                        || (!x.End.HasValue && (DateTimeOffset.Compare(x.Start.AddDays(1), ce.Start) >= 0 && DateTimeOffset.Compare(x.Start.AddDays(1), end) < 0)))
+                        || ((x.End.HasValue && (DateTimeOffset.Compare(x.End.Value, ce.Start) > 0 && DateTimeOffset.Compare(x.End.Value, end) < 0))
+                        || (!x.End.HasValue && (DateTimeOffset.Compare(x.Start.AddDays(1), ce.Start) > 0 && DateTimeOffset.Compare(x.Start.AddDays(1), end) < 0)))
                         ) || (DateTimeOffset.Compare(x.Start, ce.Start) <= 0 && ((x.End.HasValue && DateTimeOffset.Compare(x.End.Value, end) >= 0) || (!x.End.HasValue && DateTimeOffset.Compare(x.Start.AddDays(1), end) >= 0)))
                     )
                 );

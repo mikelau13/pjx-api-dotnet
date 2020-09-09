@@ -132,6 +132,54 @@ namespace Pjx.CalendarLibrary.ConflictChecks.Tests
             }
         }
 
+
+        [TestMethod()]
+        public void OverlapJustTouching()
+        {
+            // Assertion: just touching another later event
+            using (var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(new OverlappingCheck()).As<IOverlappingCheck>()))
+            {
+                var eventToCheck = new CalendarEvent { Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, new TimeSpan()), End = new DateTimeOffset(2020, 1, 2, 0, 0, 0, new TimeSpan()) };
+                mock.Mock<ICalendarEventRepository<CalendarEvent>>()
+                    .Setup(x => x.GetAll())
+                    .Returns(new List<CalendarEvent>
+                    {
+                        new CalendarEvent { EventId = 1, Start = eventToCheck.End.Value, End = eventToCheck.End.Value.AddHours(1) }
+                    }
+                    );
+                var checker = mock.Create<ConflictCheck>();
+                Assert.IsTrue(checker.DoCheck(eventToCheck), "True if another event touching end time of this event.");
+
+                // full/all day event
+                eventToCheck = new CalendarEvent { Start = eventToCheck.End.Value.AddHours(1), End = eventToCheck.End.Value.AddHours(2) };
+                Assert.IsTrue(checker.DoCheck(eventToCheck), "True if another event end time touching this event.");
+            }
+        }
+
+
+        [TestMethod()]
+        public void OverlapJustTouchingFullDay()
+        {
+            // Assertion: just touching another later event
+            using (var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(new OverlappingCheck()).As<IOverlappingCheck>()))
+            {
+                var eventToCheck = new CalendarEvent { Start = new DateTimeOffset(2020, 1, 1, 0, 0, 0, new TimeSpan()), End = new DateTimeOffset(2020, 1, 2, 0, 0, 0, new TimeSpan()) };
+                mock.Mock<ICalendarEventRepository<CalendarEvent>>()
+                    .Setup(x => x.GetAll())
+                    .Returns(new List<CalendarEvent>
+                    {
+                        new CalendarEvent { EventId = 1, Start = eventToCheck.End.Value }
+                    }
+                    );
+                var checker = mock.Create<ConflictCheck>();
+                Assert.IsTrue(checker.DoCheck(eventToCheck), "True if another event touching end time of this event.");
+
+                // full/all day event
+                eventToCheck = new CalendarEvent { Start = eventToCheck.End.Value.AddDays(1), End = eventToCheck.End.Value.AddDays(2) };
+                Assert.IsTrue(checker.DoCheck(eventToCheck), "True if another event end time touching this event.");
+            }
+        }
+
         [TestMethod()]
         public void Including()
         {
