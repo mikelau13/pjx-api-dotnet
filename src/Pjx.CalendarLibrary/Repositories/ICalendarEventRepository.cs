@@ -1,16 +1,12 @@
-﻿using Pjx.CalendarLibrary.Models;
+﻿using Pjx.CalendarEntity.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pjx.CalendarLibrary.Repositories
 {
-    public interface ICalendarEventRepository
+    public interface ICalendarEventRepository<T>: IGenericRepository<T>
+        where T: class, ICalendarEvent
     {
-        IEnumerable<CalendarEvent> ReadAllCalendarEvent(DateTimeOffset start, DateTimeOffset end);
-        CalendarEvent ReadCalendarEvent(int id);
-        void CreateCalendarEvent(int id);
-        void UpdateCalendarEvent(int id);
-        void DeleteCalendarEvent(int id);
+        List<T> GetAllBetweenByUser(string userId, DateTimeOffset start, DateTimeOffset end);
     }
 }

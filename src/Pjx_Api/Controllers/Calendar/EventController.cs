@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Pjx.CalendarLibrary.Models;
+using Pjx.CalendarEntity.Models;
+using Pjx.CalendarLibrary.ConflictChecks;
+using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
 namespace Pjx_Api.Controllers.Calendar
@@ -27,7 +29,6 @@ namespace Pjx_Api.Controllers.Calendar
         public EventController(ILogger<EventController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-            //_context = context;
             _unitOfWork = unitOfWork;
         }
 
@@ -60,15 +61,31 @@ namespace Pjx_Api.Controllers.Calendar
                 UserId = userId,
                 Title = model.Title,
                 Start = model.Start,
-                End = model.End
+                End = model.End,
+                DepartmentId = 1
             };
 
-            //TODO: business logic here to validate event
+            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
 
-            _unitOfWork.CalendarEvents.Add(ce);
-            _unitOfWork.Complete();
+            if (cc.DoCheck(ce))
+            {
+                _unitOfWork.CalendarEvents.Add(ce);
 
-            return new JsonResult(ce);
+                int updated = _unitOfWork.Complete();
+
+                if (updated > 0)
+                {
+                    return new JsonResult(ce);
+                }
+                else
+                {
+                    return base.Problem("Failed to commit.");
+                }
+            }
+            else
+            {
+                return base.Problem("Failed conflict check.");
+            }
         }
 
 
@@ -87,21 +104,34 @@ namespace Pjx_Api.Controllers.Calendar
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            CalendarEvent ce = new CalendarEvent
+            CalendarEvent ce = _unitOfWork.CalendarEvents.GetById(model.Id);
+
+            if (ce == null) return NotFound();
+
+            ce.Title = model.Title;
+            ce.Start = model.Start;
+            ce.End = model.End;
+
+            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
+
+            if (cc.DoCheck(ce))
             {
-                EventId = model.Id,
-                UserId = userId,
-                Title = model.Title,
-                Start = model.Start,
-                End = model.End
-            };
+                _unitOfWork.CalendarEvents.Update(ce);
+                int updated = _unitOfWork.Complete();
 
-            //TODO: business logic here to validate event
-
-            _unitOfWork.CalendarEvents.Update(ce);
-            _unitOfWork.Complete();
-
-            return new JsonResult(ce);
+                if (updated > 0)
+                {
+                    return new JsonResult(ce);
+                }
+                else
+                {
+                    return base.Problem("Failed to commit.");
+                }
+            }
+            else
+            {
+                return base.Problem("Failed conflict check.");
+            }
         }
 
 
@@ -125,10 +155,19 @@ namespace Pjx_Api.Controllers.Calendar
             if (toDel != null && toDel.UserId == userId)
             {
                 _unitOfWork.CalendarEvents.Remove(toDel);
-                _unitOfWork.Complete();
+                int updated =_unitOfWork.Complete();
 
-                return new JsonResult(true);
-            } else {
+                if (updated > 0) 
+                {
+                    return new JsonResult(true);
+                }
+                else
+                {
+                    return base.Problem ("Failed to commit.");
+                } 
+            } 
+            else 
+            {
                 return new JsonResult(false);
             }
         }

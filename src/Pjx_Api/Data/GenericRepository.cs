@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Pjx.CalendarLibrary.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace Pjx_Api.Data
 {
@@ -30,7 +30,7 @@ namespace Pjx_Api.Data
             return _context.Set<T>().Where(expression);
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             return _context.Set<T>().ToList();
         }

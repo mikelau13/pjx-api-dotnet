@@ -2,9 +2,12 @@
 
 This repository is a group of .NET Core 3.1 dotnet core projects:
 
-- [Pjx_Api](https://github.com/mikelau13/pjx-api-dotnet/blob/master/src/Pjx_Api) - API gateway for business logics (content still to be developed), authenticated by [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver).
-- [Pjx_CreateCertificates](https://github.com/mikelau13/pjx-api-dotnet/blob/master/src/Pjx_CreateCertificates) - generate self-seigned certificates
-- [Pjx_CreateCertificates_Test](https://github.com/mikelau13/pjx-api-dotnet/blob/master/src/Pjx_CreateCertificates_Test) - TDD of the Pjx_CreateCertificates
+- [Pjx_Api](/src/Pjx_Api) - Calendar API gateway, authenticated by [pjx-sso-identityserver](https://github.com/mikelau13/pjx-sso-identityserver).
+- [Pjx.CalendarLibrary](/src/Pjx.CalendarLibrary) - Business logic layer of the calendar API, with Repository pattern
+- [Pjx.CalendarEntity](/src/Pjx.CalendarEntity) - Entity layer of the calendar libray, with Entity Framework 
+- [Pjx.Calendar_Test](/src/Pjx.Calendar_Test) - TDD to test `Pjx.CalendarLibrary`, using [Autofac](https://autofac.org/) IoC container to mock the repositories
+- [Pjx_CreateCertificates](/src/Pjx_CreateCertificates) - generate self-seigned certificates
+- [Pjx_CreateCertificates_Test](/src/Pjx_CreateCertificates_Test) - TDD of the Pjx_CreateCertificates
 
 This project is one of the components of the `pjx` application, please check [pjx-root](https://github.com/mikelau13/pjx-root) for more details.
 

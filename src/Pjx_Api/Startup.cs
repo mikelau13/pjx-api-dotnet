@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Pjx.CalendarEntity.Models;
+using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
 namespace Pjx_Api
@@ -56,7 +58,7 @@ namespace Pjx_Api
             #region dbContext & Repositories
             services.AddDbContext<CalendarDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<ICalendarEventRepository, CalendarEventRepository>();
+            services.AddTransient<ICalendarEventRepository<CalendarEvent>, CalendarEventRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion dbContext & Repositories
 

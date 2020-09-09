@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pjx_Api.Data;
 
 namespace Pjx_Api.Migrations
 {
     [DbContext(typeof(CalendarDbContext))]
-    partial class CalendarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200908032621_Create")]
+    partial class Create
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,20 +72,6 @@ namespace Pjx_Api.Migrations
                     b.HasIndex("OrganizationId");
 
                     b.ToTable("Departments");
-
-                    b.HasData(
-                        new
-                        {
-                            DepartmentId = 1,
-                            Name = "Default Department A",
-                            OrganizationId = 1
-                        },
-                        new
-                        {
-                            DepartmentId = 2,
-                            Name = "Default Department B",
-                            OrganizationId = 1
-                        });
                 });
 
             modelBuilder.Entity("Pjx.CalendarEntity.Models.Organization", b =>
@@ -106,13 +94,6 @@ namespace Pjx_Api.Migrations
                         .HasName("Index_OrganizationId");
 
                     b.ToTable("Organizations");
-
-                    b.HasData(
-                        new
-                        {
-                            OrganizationId = 1,
-                            Name = "Default Organization"
-                        });
                 });
 
             modelBuilder.Entity("Pjx.CalendarEntity.Models.CalendarEvent", b =>
