@@ -104,14 +104,13 @@ namespace Pjx_Api.Controllers.Calendar
             ClaimsPrincipal currentUser = this.User;
             string userId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            CalendarEvent ce = new CalendarEvent
-            {
-                EventId = model.Id,
-                UserId = userId,
-                Title = model.Title,
-                Start = model.Start,
-                End = model.End
-            };
+            CalendarEvent ce = _unitOfWork.CalendarEvents.GetById(model.Id);
+
+            if (ce == null) return NotFound();
+
+            ce.Title = model.Title;
+            ce.Start = model.Start;
+            ce.End = model.End;
 
             ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
 

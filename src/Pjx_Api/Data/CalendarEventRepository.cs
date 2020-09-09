@@ -16,8 +16,8 @@ namespace Pjx_Api.Data
                 x.UserId == userId
                 && ((DateTimeOffset.Compare(x.Start, start) >= 0 && DateTimeOffset.Compare(x.Start, end) < 0)
                 || ((x.End.HasValue && (DateTimeOffset.Compare(x.End.Value, start) >= 0 && DateTimeOffset.Compare(x.End.Value, end) < 0))
-                || (!x.End.HasValue && (DateTimeOffset.Compare(x.Start.AddDays(1), start) >= 0 && DateTimeOffset.Compare(x.Start.AddDays(1), end) < 0)))
-                ) || (DateTimeOffset.Compare(x.Start, start) <= 0 && ((x.End.HasValue && DateTimeOffset.Compare(x.End.Value, end) >= 0) || (!x.End.HasValue && DateTimeOffset.Compare(x.Start.AddDays(1), end) >= 0)))
+                || (!x.End.HasValue && (DateTimeOffset.Compare(x.Start, start.AddDays(-1)) >= 0 && DateTimeOffset.Compare(x.Start, end.AddDays(-1)) < 0)))
+                ) || (DateTimeOffset.Compare(x.Start, start) <= 0 && ((x.End.HasValue && DateTimeOffset.Compare(x.End.Value, end) >= 0) || (!x.End.HasValue && DateTimeOffset.Compare(x.Start, end.AddDays(-1)) >= 0)))
             ).ToList();
 
             return results;
