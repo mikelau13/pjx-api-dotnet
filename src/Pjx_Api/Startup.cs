@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using Pjx.CalendarEntity.Models;
+using Pjx.CalendarLibrary.ConflictChecks;
 using Pjx.CalendarLibrary.Repositories;
 using Pjx_Api.Data;
 
@@ -55,12 +56,11 @@ namespace Pjx_Api
                 };
             });
 
-            #region dbContext & Repositories
+            #region inject CalendarEvent conflict check
             services.AddDbContext<CalendarDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<ICalendarEventRepository<CalendarEvent>, CalendarEventRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            #endregion dbContext & Repositories
+            services.AddCalendareEventRepository(Configuration.GetSection("CalendarEventDI"));
+            #endregion
 
             IConfigurationRoot configurationRoot = new ConfigurationBuilder().AddEnvironmentVariables("PJX_").Build();
             IConfigurationSection section = configurationRoot.GetSection("SSO"); 
@@ -99,6 +99,8 @@ namespace Pjx_Api
                         .AllowAnyMethod();
                 });
             });
+
+
         }
 
         public void Configure(IApplicationBuilder app)

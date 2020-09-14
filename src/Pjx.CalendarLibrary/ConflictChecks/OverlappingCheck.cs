@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Pjx.CalendarLibrary.ConflictChecks
 {
-    public interface IOverlappingCheck : IConflictCheck { }
+    public interface IOverlappingCheck : IEventCheck { }
 
     public class OverlappingCheck: EventCheckAbstract, IOverlappingCheck
     {

@@ -25,11 +25,15 @@ namespace Pjx_Api.Controllers.Calendar
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<EventController> _logger;
+        private IConflictCheck _conflictCheck;
 
-        public EventController(ILogger<EventController> logger, IUnitOfWork unitOfWork)
+        public EventController(ILogger<EventController> logger
+            , IUnitOfWork unitOfWork
+            , IConflictCheck conflictCheck)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _conflictCheck = conflictCheck;
         }
 
         [Route("healthcheck")]
@@ -65,9 +69,7 @@ namespace Pjx_Api.Controllers.Calendar
                 DepartmentId = 1
             };
 
-            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
-
-            if (cc.DoCheck(ce))
+            if (_conflictCheck.DoCheck(ce))
             {
                 _unitOfWork.CalendarEvents.Add(ce);
 
@@ -112,9 +114,7 @@ namespace Pjx_Api.Controllers.Calendar
             ce.Start = model.Start;
             ce.End = model.End;
 
-            ConflictCheck cc = new ConflictCheck(_unitOfWork.CalendarEvents, new OverlappingCheck());
-
-            if (cc.DoCheck(ce))
+            if (_conflictCheck.DoCheck(ce))
             {
                 _unitOfWork.CalendarEvents.Update(ce);
                 int updated = _unitOfWork.Complete();
@@ -194,6 +194,43 @@ namespace Pjx_Api.Controllers.Calendar
             IEnumerable<CalendarEvent> results = _unitOfWork.CalendarEvents.GetAllBetweenByUser(userId, start, end);
 
             return new JsonResult(results);
+        }
+
+
+        [Route("event/test")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Test()
+        {
+            _logger.LogInformation("EventController.Test()");
+
+            CalendarEvent ce = new CalendarEvent
+            {
+                UserId = "testuser",
+                Title = "whatever",
+                Start = new DateTimeOffset(2020, 1, 2, 0, 0, 0, new TimeSpan()),
+                DepartmentId = 1
+            };
+
+            if (_conflictCheck.DoCheck(ce))
+            {
+                _unitOfWork.CalendarEvents.Add(ce);
+
+                int updated = _unitOfWork.Complete();
+
+                if (updated > 0)
+                {
+                    return new JsonResult(ce);
+                }
+                else
+                {
+                    return base.Problem("Failed to commit.");
+                }
+            }
+            else
+            {
+                return base.Problem("Failed conflict check.");
+            }
         }
     }
 }

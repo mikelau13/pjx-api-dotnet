@@ -6,11 +6,18 @@
 
   <ItemGroup>
     <Compile Remove="Data\**" />
+    <Compile Remove="Extensions\**" />
     <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Data\**" />
+    <None Remove="Extensions\**" />
     <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Extensions\CalendarEventServiceExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>

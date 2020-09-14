@@ -7,9 +7,9 @@ namespace Pjx.CalendarLibrary.ConflictChecks
 {
     public class ConflictCheckChain
     {
-        private IConflictCheck handler;
+        private IEventCheck handler;
 
-        public ConflictCheckChain(IConflictCheck _handler)
+        public ConflictCheckChain(IEventCheck _handler)
         {
             handler = _handler;
         }
