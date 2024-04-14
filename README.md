@@ -87,3 +87,24 @@ Start-Process -NoNewWindow -Wait -FilePath (Join-Path $opensslPath "openssl.exe"
 #this will prompt for the password
 $cert = Get-PfxCertificate -FilePath (Join-Path $workDir "pjx-sso-identityserver.rsa_2048.cert.pfx") 
 ```
+
+
+## Docker Hub registry
+
+To push docker image:
+```
+docker login
+docker image ls
+docker tag xxxxxxxxxxxxxxxxx mikelauawaremd/pjx-api-dotnet:v0.0.yy
+docker push mikelauawaremd/pjx-api-dotnet:v0.0.yy
+```
+
+[Pull image from Docker Hub registry at mikelauawaremd/pjx-api-dotnet/v0.0.1](https://hub.docker.com/layers/mikelauawaremd/pjx-api-dotnet/v0.0.1/images/sha256-391b16125cdbdff9d8e924dd678d8ca6fd3b87bf13f027a35db5beb9bb53455c?tab=layers)
+```
+docker pull mikelauawaremd/pjx-api-dotnet:v0.0.1
+```
+
+[Apply Kubernetes deployment at pjx/kubernetes/pjx-api-dotnet.yaml](https://github.com/mikelau13/pjx-root/tree/master/kubernetes/pjx-api-dotnet.yaml)
+```
+kubectl apply -f pjx-web-react.yaml --namespace=pjx
+```
