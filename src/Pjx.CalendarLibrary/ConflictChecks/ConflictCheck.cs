@@ -7,17 +7,17 @@ using System.Text;
 
 namespace Pjx.CalendarLibrary.ConflictChecks
 {
-    public class ConflictCheck
+    public class ConflictCheck: IConflictCheck
     {
         private ConflictCheckChain _chain;
-        private List<CalendarEvent> _events;
+        private ICalendarEventRepository<CalendarEvent> _repository;
 
         public ConflictCheck(ICalendarEventRepository<CalendarEvent> repository
             , [Optional] IOverlappingCheck olc)
         {
-            _events = repository.GetAll(); // The idea is that, there will be many rule checks (my previous projects have over 30 rules) as well as many events (aka 1000+), so we do not want to connect to database multiple times
+            _repository = repository;
 
-            IConflictCheck handler = BuildCheckChain(olc);
+            IEventCheck handler = BuildCheckChain(olc);
 
             handler.SetNext(new NullCheck()); // Null check always the last one
             _chain = new ConflictCheckChain(handler);
@@ -25,12 +25,14 @@ namespace Pjx.CalendarLibrary.ConflictChecks
 
         public bool DoCheck(ICalendarEvent ce)
         {
-            return _chain.Execute(_events, ce);
+            List<CalendarEvent> events = _repository.GetAllBetweenByUser(ce.UserId, DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
+
+            return _chain.Execute(events, ce);
         }
 
-        private IConflictCheck BuildCheckChain(IConflictCheck olc)
+        private IEventCheck BuildCheckChain(IEventCheck olc)
         {
-            IConflictCheck handler = olc;
+            IEventCheck handler = olc;
 
             handler.SetNext(new NullCheck());
 

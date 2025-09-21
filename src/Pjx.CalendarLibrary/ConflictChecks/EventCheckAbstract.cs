@@ -5,18 +5,11 @@ using System.Text;
 
 namespace Pjx.CalendarLibrary.ConflictChecks
 {
-    public interface IConflictCheck
+    public abstract class EventCheckAbstract: IEventCheck
     {
-        IConflictCheck SetNext(IConflictCheck handler);
+        private IEventCheck _nextCheck;
 
-        bool Check(List<CalendarEvent> events, ICalendarEvent ce);
-    }
-
-    public abstract class EventCheckAbstract: IConflictCheck
-    {
-        private IConflictCheck _nextCheck;
-
-        public IConflictCheck SetNext(IConflictCheck conflictCheck)
+        public IEventCheck SetNext(IEventCheck conflictCheck)
         {
             _nextCheck = conflictCheck;
             return conflictCheck;

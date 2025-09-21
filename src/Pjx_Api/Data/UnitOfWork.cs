@@ -10,10 +10,14 @@ namespace Pjx_Api.Data
         public IOrganizationRepository<Organization> Organizations { get; private set; }
         public IDepartmentRepository<Department> Departments { get; private set; }
 
-        public UnitOfWork(CalendarDbContext context)
+        public UnitOfWork(CalendarDbContext context,
+            ICalendarEventRepository<CalendarEvent> _ceRepo)
         {
             _context = context;
-            CalendarEvents = new CalendarEventRepository(_context);
+
+            // for now, I am only injecting CalenderEvent Repository for testing purpose
+            // I might inject other repositories in the future when it is necessary
+            CalendarEvents = _ceRepo;
             Organizations = new OrganizationRepository(_context);
             Departments = new DepartmentRepository(_context);
         }
